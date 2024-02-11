@@ -1,0 +1,9 @@
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rinha_backend
+    ports:
+      - 5432:5432
