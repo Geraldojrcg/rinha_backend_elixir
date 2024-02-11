@@ -7,10 +7,10 @@ services:
     hostname: api1
     environment:
       PHX_HOST: api1
-      ERL_MAX_PORTS: 1024
+      ERL_MAX_PORTS: 512
       DATABASE_URL: postgres://postgres:postgres@database/rinha_backend
       PORT: 3000
-      POOL_SIZE: 120
+      POOL_SIZE: 20
       SECRET_KEY_BASE: N1Bgi5I4wbP5J8I4V4UmE5VlkWSIH/8mBAGkiHeF+h1OkQGWnCulI71yKsFxi0MS
     deploy:
       resources:
@@ -24,10 +24,10 @@ services:
     hostname: api2
     environment:
       PHX_HOST: api2
-      ERL_MAX_PORTS: 1024
+      ERL_MAX_PORTS: 512
       DATABASE_URL: postgres://postgres:postgres@database/rinha_backend
       PORT: 3000
-      POOL_SIZE: 120
+      POOL_SIZE: 20
       SECRET_KEY_BASE: N1Bgi5I4wbP5J8I4V4UmE5VlkWSIH/8mBAGkiHeF+h1OkQGWnCulI71yKsFxi0MS
 
   database:
@@ -40,13 +40,13 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - database:/var/lib/postgresql/data
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql
       - ./postgresql.conf:/etc/postgresql.conf
     deploy:
       resources:
         limits:
-          cpus: "0.6"
-          memory: "200MB"
+          cpus: "0.8"
+          memory: "300MB"
 
   nginx:
     image: nginx:latest
@@ -60,8 +60,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
-          memory: "100MB"
-
-volumes:
-  database:
+          cpus: "0.1"
+          memory: "50MB"

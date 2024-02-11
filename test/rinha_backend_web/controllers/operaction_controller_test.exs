@@ -131,8 +131,6 @@ defmodule RinhaBackendWeb.OperactionControllerTest do
 
       conn = get(conn, ~p"/clientes/1/extrato")
 
-      create_date = DateTime.to_string(DateTime.utc_now())
-
       assert response(conn, 200)
 
       response = json_response(conn, 200)

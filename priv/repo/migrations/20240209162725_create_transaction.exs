@@ -6,9 +6,8 @@ defmodule RinhaBackend.Repo.Migrations.CreateTransacao do
       add :value, :integer
       add :type, :string
       add :description, :string
+      add :inserted_at, :naive_datetime
       add :client_id, references(:client, on_delete: :nothing)
-
-      timestamps(type: :utc_datetime)
     end
 
     create index(:transaction, [:client_id])

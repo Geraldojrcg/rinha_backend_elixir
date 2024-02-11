@@ -1,4 +1,4 @@
-# Production Image
+# Build Image
 ARG ELIXIR_VERSION=1.16.0
 ARG OTP_VERSION=26.2.1
 ARG DEBIAN_VERSION=bullseye-20231009-slim
@@ -42,16 +42,9 @@ COPY lib lib
 # Compile the release
 RUN mix compile
 
-COPY rel rel
-
 RUN mix release --path release
 
-# Copy custom commands
-RUN mkdir -p release/bin/commands && cp rel/commands/* release/bin/commands
-
-# ---------------------------------------------------------#
-# Run Release                                              #
-# ---------------------------------------------------------#
+# Release Image
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y \
@@ -77,14 +70,12 @@ RUN chown nobody /app
 # set runner ENV
 ENV MIX_ENV="prod"
 
+COPY entrypoint.sh /app
+RUN chmod u+x entrypoint.sh
+
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/release /app/.
-RUN chmod u+x /app/bin/commands/*
 
 USER nobody
 
-ENV PATH=/app/bin/commands:$PATH
-
-ENTRYPOINT ["/usr/bin/tini", "--"]
-
-CMD ["sh", "-c", "rinha_backend start"]
+CMD ["./entrypoint.sh"]

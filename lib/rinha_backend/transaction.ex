@@ -6,10 +6,9 @@ defmodule RinhaBackend.Transaction do
     field :value, :integer
     field :type, :string
     field :description, :string
+    field :inserted_at, :naive_datetime
 
     field :client_id, :id
-
-    timestamps(type: :utc_datetime)
   end
 
   def changeset(transaction, attrs) do
