@@ -1,5 +1,5 @@
-# Rinha de backend 2024 q1
-[https://miro.medium.com/v2/resize:fit:1000/1*IUOn1znmxqjRsli9GgSOFg.jpeg]()
+# Rinha de backend 2024 q1 💧
+<img src="https://miro.medium.com/v2/resize:fit:1000/1*IUOn1znmxqjRsli9GgSOFg.jpeg" width="400" />
 
 To start your Phoenix server:
 
