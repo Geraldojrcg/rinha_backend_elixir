@@ -1,6 +1,6 @@
 version: "3.5"
 services:
-  api1: &api #build: .
+  api1: &api
     image: geraldojrcg/rinha-backend-2024-q1-elixir
     depends_on:
       - database
@@ -20,7 +20,6 @@ services:
 
   api2:
     <<: *api
-    build: .
     hostname: api2
     environment:
       PHX_HOST: api2
