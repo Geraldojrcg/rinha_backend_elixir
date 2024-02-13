@@ -9,11 +9,6 @@ defmodule RinhaBackend.Application do
   def start(_type, _args) do
     children = [
       RinhaBackend.Repo,
-      {DNSCluster, query: Application.get_env(:rinha_backend, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: RinhaBackend.PubSub},
-      # Start a worker by calling: RinhaBackend.Worker.start_link(arg)
-      # {RinhaBackend.Worker, arg},
-      # Start to serve requests, typically the last entry
       RinhaBackendWeb.Endpoint
     ]
 

@@ -27,6 +27,12 @@ defmodule RinhaBackendWeb.OperactionControllerTest do
     descricao: "teste"
   }
 
+  @concurrency_credit_transaction_params %{
+    valor: 1,
+    tipo: "c",
+    descricao: "teste"
+  }
+
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
@@ -147,6 +153,32 @@ defmodule RinhaBackendWeb.OperactionControllerTest do
                    "descricao" => "teste"
                  }
                ]
+             } = response
+    end
+  end
+
+  describe "concurrency test" do
+    test "should return the correctly amount", %{conn: conn} do
+      tasks =
+        Enum.map(1..10, fn _ ->
+          Task.async(fn ->
+            post(conn, ~p"/clientes/1/transacoes", @concurrency_credit_transaction_params)
+          end)
+        end)
+
+      Task.await_many(tasks)
+
+      conn = get(conn, ~p"/clientes/1/extrato")
+
+      assert response(conn, 200)
+
+      response = json_response(conn, 200)
+
+      assert %{
+               "saldo" => %{
+                 "total" => 10,
+                 "limite" => 100_000
+               }
              } = response
     end
   end
