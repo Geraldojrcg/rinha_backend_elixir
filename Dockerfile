@@ -70,12 +70,15 @@ RUN chown nobody /app
 # set runner ENV
 ENV MIX_ENV="prod"
 
+COPY wait-for-it.sh /app
+RUN chmod +x wait-for-it.sh
+
 COPY entrypoint.sh /app
-RUN chmod u+x entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/release /app/.
 
 USER nobody
 
-CMD ["./entrypoint.sh"]
+CMD ["./wait-for-it.sh", "database:5432", "--", "./entrypoint.sh"]
