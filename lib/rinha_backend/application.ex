@@ -14,7 +14,11 @@ defmodule RinhaBackend.Application do
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: RinhaBackend.Supervisor]
+    opts = [
+      strategy: :one_for_one,
+      name: RinhaBackend.Supervisor
+    ]
+
     Supervisor.start_link(children, opts)
   end
 

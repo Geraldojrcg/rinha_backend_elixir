@@ -18,10 +18,7 @@ config :rinha_backend, RinhaBackendWeb.Endpoint,
   render_errors: [
     formats: [json: RinhaBackendWeb.ErrorJSON],
     layout: false
-  ],
-  pubsub_server: RinhaBackend.PubSub,
-  live_view: [signing_salt: "yPw2GDqM"],
-  server: true
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

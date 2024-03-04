@@ -1,21 +1,27 @@
 defmodule RinhaBackend.Release do
+  @moduledoc """
+  Used for executing DB release tasks when run in production without Mix
+  installed.
+  """
   @app :rinha_backend
 
-  @repos Application.compile_env(@app, :ecto_repos, [])
-
   def migrate do
-    Application.load(@app)
+    load_app()
 
-    for repo <- @repos do
-      repo.__adapter__().storage_up(repo.config())
+    for repo <- repos() do
       {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
     end
   end
 
-  def seed do
-    Application.load(@app)
+  def rollback(repo, version) do
+    load_app()
+    {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
+  end
 
-    for repo <- @repos do
+  def seed do
+    load_app()
+
+    for repo <- repos() do
       {:ok, _, _} =
         Ecto.Migrator.with_repo(repo, fn repo ->
           Ecto.Migrator.run(repo, :up, all: true)
@@ -23,6 +29,14 @@ defmodule RinhaBackend.Release do
           run_seeds_for(repo)
         end)
     end
+  end
+
+  defp repos do
+    Application.fetch_env!(@app, :ecto_repos)
+  end
+
+  defp load_app do
+    Application.load(@app)
   end
 
   defp run_seeds_for(repo) do
