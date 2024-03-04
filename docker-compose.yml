@@ -1,8 +1,7 @@
 version: "3.5"
 services:
   api1: &api
-    #image: geraldojrcg/rinha-backend-2024-q1-elixir
-    build: .
+    image: geraldojrcg/rinha-backend-2024-q1-elixir:latest
     depends_on:
       - database
     hostname: api1
